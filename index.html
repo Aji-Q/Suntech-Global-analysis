@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suntec REIT: Global Competitive Analysis for Investment Risk Management Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #00d4aa;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --success-color: #00d4aa;
+            --warning-color: #ff6b35;
+            --danger-color: #ff4757;
+            --info-color: #3742fa;
+            --chart-bg: #1e1e1e;
+            --card-bg: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--primary-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            background: var(--primary-color);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            border-bottom: 2px solid var(--accent-color);
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .header .container {
+            position: relative;
+        }
+
+        .header h1 {
+            font-weight: 300;
+            font-size: 2rem;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin: 5px 0 0 0;
+        }
+
+        .nav-tabs {
+            background: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 0;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 15px 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--accent-color);
+        }
+
+        .content-section {
+            padding: 30px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--secondary-color), var(--card-bg));
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 25px rgba(0, 212, 170, 0.2);
+        }
+
+        .metric-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+            font-weight: 300;
+        }
+
+        .metric-card p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-container {
+            background: var(--chart-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            height: 400px;
+            position: relative;
+        }
+
+        .chart-title {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .chart-wrapper {
+            height: calc(100% - 60px);
+            margin-top: 40px;
+        }
+
+        .comparison-table {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            font-weight: 600;
+            padding: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .data-card h6 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .data-card li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .swot-card {
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .swot-card h5 {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .swot-card ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        
+        .swot-card li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .swot-strengths {
+            background: rgba(0, 212, 170, 0.1);
+            border-color: var(--success-color);
+        }
+        
+        .swot-weaknesses {
+            background: rgba(255, 71, 87, 0.1);
+            border-color: var(--danger-color);
+        }
+        
+        .swot-opportunities {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(--warning-color);
+        }
+        
+        .swot-threats {
+            background: rgba(55, 66, 250, 0.1);
+            border-color: var(--info-color);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-positive { background: var(--success-color); }
+        .status-negative { background: var(--danger-color); }
+        .status-neutral { background: var(--warning-color); }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .content-section {
+                padding: 15px;
+            }
+            
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .swot-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .language-btn {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: auto;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .language-btn:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border-color: var(--accent-color);
+            transform: translateY(-1px);
+        }
+
+        .language-btn:active {
+            transform: translateY(0);
+        }
+
+        .language-btn.active {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border-color: var(--accent-color);
+        }
+
+        [data-lang="en"] {
+            display: block;
+        }
+
+        [data-lang="zh"] {
+            display: none;
+        }
+
+        body.lang-zh [data-lang="zh"] {
+            display: block !important;
+        }
+
+        body.lang-zh [data-lang="en"] {
+            display: none !important;
+        }
+
+        /* 特殊处理：当body有lang-zh类时，隐藏英文内容，显示中文内容 */
+        body.lang-zh p[data-lang="en"],
+        body.lang-zh span[data-lang="en"],
+        body.lang-zh div[data-lang="en"],
+        body.lang-zh h6[data-lang="en"],
+        body.lang-zh th[data-lang="en"],
+        body.lang-zh td[data-lang="en"] {
+            display: none !important;
+        }
+
+        body.lang-zh p[data-lang="zh"],
+        body.lang-zh span[data-lang="zh"],
+        body.lang-zh div[data-lang="zh"],
+        body.lang-zh h6[data-lang="zh"],
+        body.lang-zh th[data-lang="zh"],
+        body.lang-zh td[data-lang="zh"] {
+            display: block !important;
+        }
+
+        /* 内联元素特殊处理 */
+        body.lang-zh span[data-lang="zh"] {
+            display: inline !important;
+        }
+
+        body.lang-zh span[data-lang="en"] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="container">
+                <div class="language-switch">
+                    <button class="language-btn active" data-lang="en">EN</button>
+                    <button class="language-btn" data-lang="zh">中文</button>
+                </div>
+                <h1><i class="fas fa-chart-line"></i> Suntec REIT</h1>
+                <p data-lang="en">Global Competitive Analysis for Investment Risk Management Analysis</p>
+                <p data-lang="zh">全球竞争分析报告 - 投资风险管理分析</p>
+            </div>
+        </div>
+
+        <!-- 导航标签 -->
+        <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
+                    <i class="fas fa-home"></i> <span data-lang="en">Overview</span><span data-lang="zh">概览</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="asia-tab" data-bs-toggle="tab" data-bs-target="#asia" type="button" role="tab">
+                    <i class="fas fa-globe-asia"></i> <span data-lang="en">Asia</span><span data-lang="zh">亚洲</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="europe-tab" data-bs-toggle="tab" data-bs-target="#europe" type="button" role="tab">
+                    <i class="fas fa-globe-europe"></i> <span data-lang="en">Europe</span><span data-lang="zh">欧洲</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="us-tab" data-bs-toggle="tab" data-bs-target="#us" type="button" role="tab">
+                    <i class="fas fa-globe-americas"></i> <span data-lang="en">United States</span><span data-lang="zh">美国</span>
+                </button>
+            </li>
+        </ul>
+
+        <!-- 内容区域 -->
+        <div class="tab-content" id="mainTabsContent">
+            <!-- Overview -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <div class="content-section">
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="fas fa-bullseye"></i>
+                            <span data-lang="en">Investment Analysis Overview</span><span data-lang="zh">投资分析概览</span>
+                        </h2>
+                        <p style="color: var(--text-secondary); line-height: 1.6;" data-lang="en">
+                            Comprehensive competitive analysis comparing Suntec REIT's market positioning, financial performance, and strategic capabilities with global competitors across Asia, Europe, and the US. Analysis focuses on identifying strengths, weaknesses, opportunities, and threats to inform strategic decisions for enhancing unitholder value and tenant appeal.
+                        </p>
+                        <p style="color: var(--text-secondary); line-height: 1.6;" data-lang="zh">
+                            全面的竞争分析，比较Suntec REIT在亚洲、欧洲和美国的市场定位、财务表现和战略能力。分析重点在于识别优势、劣势、机会和威胁，为提升单位持有人价值和租户吸引力的战略决策提供信息。
+                        </p>
+                    </div>
+
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <h3>SGD 12.1B</h3>
+                            <p data-lang="en">Portfolio Value (2024)</p>
+                            <p data-lang="zh">投资组合价值 (2024)</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>98.8%</h3>
+                            <p data-lang="en">Office Occupancy</p>
+                            <p data-lang="zh">办公室入住率</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>98.4%</h3>
+                            <p data-lang="en">Mall Occupancy</p>
+                            <p data-lang="zh">商场入住率</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>5★</h3>
+                            <p data-lang="en">GRESB Rating</p>
+                            <p data-lang="zh">GRESB评级</p>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="fas fa-chart-pie"></i>
+                            <span data-lang="en">Portfolio Distribution</span><span data-lang="zh">投资组合分布</span>
+                        </h2>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">Geographic Asset Allocation</div>
+                                    <div class="chart-title" data-lang="zh">地理资产配置</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="portfolioChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="data-grid">
+                                    <div class="data-card">
+                                        <h6><i class="fas fa-map-marker-alt"></i> <span data-lang="en">Geographic Distribution</span><span data-lang="zh">地理分布</span></h6>
+                                        <ul>
+                                            <li><span class="status-indicator status-positive"></span><span data-lang="en">Singapore: 77.9%</span><span data-lang="zh">新加坡: 77.9%</span></li>
+                                            <li><span class="status-indicator status-neutral"></span><span data-lang="en">Australia: 12.4%</span><span data-lang="zh">澳大利亚: 12.4%</span></li>
+                                            <li><span class="status-indicator status-negative"></span><span data-lang="en">UK: 9.7%</span><span data-lang="zh">英国: 9.7%</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="data-card">
+                                        <h6><i class="fas fa-building"></i> <span data-lang="en">Asset Type</span><span data-lang="zh">资产类型</span></h6>
+                                        <ul>
+                                            <li><span class="status-indicator status-positive"></span><span data-lang="en">Office: 78%</span><span data-lang="zh">办公室: 78%</span></li>
+                                            <li><span class="status-indicator status-neutral"></span><span data-lang="en">Retail: 22%</span><span data-lang="zh">零售: 22%</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="data-card">
+                                        <h6><i class="fas fa-star"></i> <span data-lang="en">Key Assets</span><span data-lang="zh">关键资产</span></h6>
+                                        <ul>
+                                            <li>Suntec City</li>
+                                            <li>One Raffles Quay</li>
+                                            <li>177 Pacific Highway</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asia -->
+            <div class="tab-pane fade" id="asia" role="tabpanel">
+                <div class="content-section">
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="fas fa-globe-asia"></i>
+                            <span data-lang="en">Asia Pacific Market Analysis</span><span data-lang="zh">亚太市场分析</span>
+                        </h2>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-users"></i>
+                            <span data-lang="en">Competitive Landscape</span><span data-lang="zh">竞争格局</span>
+                        </h3>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-bullseye"></i> <span data-lang="en">Direct Competitors</span><span data-lang="zh">直接竞争对手</span></h6>
+                                <ul>
+                                    <li><a href="https://www.cict.com.sg/" target="_blank">CapitaLand Integrated Commercial Trust (CICT)</a></li>
+                                    <li><a href="https://www.mapletreecommercialtrust.com.sg/" target="_blank">Mapletree Commercial Trust (MCT)</a></li>
+                                    <li><a href="https://www.keppelreit.com/" target="_blank">Keppel REIT</a></li>
+                                    <li><a href="https://www.dexus.com/" target="_blank">Dexus</a></li>
+                                    <li><a href="https://www.mirvac.com/" target="_blank">Mirvac Group</a></li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-shield-alt"></i> <span data-lang="en">Indirect Competitors</span><span data-lang="zh">间接竞争对手</span></h6>
+                                <ul>
+                                    <li><span data-lang="en">Private real estate funds</span><span data-lang="zh">私人房地产基金</span></li>
+                                    <li>Blackstone's Asia funds</li>
+                                    <li><span data-lang="en">Developers (Lendlease)</span><span data-lang="zh">开发商 (Lendlease)</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-database"></i>
+                            <span data-lang="en">Financial Performance Comparison</span><span data-lang="zh">财务表现对比</span>
+                        </h3>
+                        <div class="comparison-table">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th><span data-lang="en">Competitor</span><span data-lang="zh">竞争对手</span></th>
+                                        <th><span data-lang="en">Portfolio Value</span><span data-lang="zh">投资组合价值</span></th>
+                                        <th><span data-lang="en">Asset Type</span><span data-lang="zh">资产类型</span></th>
+                                        <th><span data-lang="en">Occupancy</span><span data-lang="zh">入住率</span></th>
+                                        <th><span data-lang="en">ESG Rating</span><span data-lang="zh">ESG评级</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Suntec REIT</strong></td>
+                                        <td>SGD 12.1B (2024)</td>
+                                        <td><span data-lang="en">78% office, 22% retail</span><span data-lang="zh">78% 办公室, 22% 零售</span></td>
+                                        <td><span data-lang="en">98.8% office, 98.4% mall</span><span data-lang="zh">98.8% 办公室, 98.4% 商场</span></td>
+                                        <td>GRESB 5 Star</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.cict.com.sg/" target="_blank">CICT</a></td>
+                                        <td>SGD 23.2B</td>
+                                        <td><span data-lang="en">48% office, 47% retail</span><span data-lang="zh">48% 办公室, 47% 零售</span></td>
+                                        <td>97.5%</td>
+                                        <td>GRESB 4 Star</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.mapletreecommercialtrust.com.sg/" target="_blank">MCT</a></td>
+                                        <td>SGD 9.2B</td>
+                                        <td><span data-lang="en">Primarily retail</span><span data-lang="zh">主要零售</span></td>
+                                        <td>97.8%</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.dexus.com/" target="_blank">Dexus</a></td>
+                                        <td>AUD 15.4B (~SGD 14B)</td>
+                                        <td><span data-lang="en">80% office</span><span data-lang="zh">80% 办公室</span></td>
+                                        <td>95%</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.mirvac.com/" target="_blank">Mirvac</a></td>
+                                        <td>AUD 12.5B (~SGD 11.3B)</td>
+                                        <td><span data-lang="en">60% office, 30% retail</span><span data-lang="zh">60% 办公室, 30% 零售</span></td>
+                                        <td>94%</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span data-lang="en">Market Share & Growth Analysis</span><span data-lang="zh">市场份额与增长分析</span>
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">Singapore Commercial REIT Market Share</div>
+                                    <div class="chart-title" data-lang="zh">新加坡商业REIT市场份额</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="asiaMarketShareChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">2024 Revenue Growth Comparison</div>
+                                    <div class="chart-title" data-lang="zh">2024年收入增长对比</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="asiaGrowthChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-percentage"></i> <span data-lang="en">Market Share Analysis</span><span data-lang="zh">市场份额分析</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">Suntec REIT: ~5% of Singapore's commercial REIT market</span><span data-lang="zh">Suntec REIT: 新加坡商业REIT市场约5%</span></li>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">CICT: ~10% (market leader)</span><span data-lang="zh">CICT: 约10% (市场领导者)</span></li>
+                                    <li><span class="status-indicator status-neutral"></span>MCT: ~4%</li>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">Dexus: ~10% in Australia's office market</span><span data-lang="zh">Dexus: 澳大利亚办公室市场约10%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span>Mirvac: ~8%</li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-arrow-up"></i> <span data-lang="en">Growth Performance</span><span data-lang="zh">增长表现</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">Suntec REIT: 1.4% (2024 gross revenue grew 1.4% to SGD 463.6M)</span><span data-lang="zh">Suntec REIT: 1.4% (2024年总收入增长1.4%至SGD 463.6M)</span></li>
+                                    <li><span class="status-indicator status-positive"></span>CICT: 3.2%</li>
+                                    <li><span class="status-indicator status-positive"></span>MCT: 2.8%</li>
+                                    <li><span class="status-indicator status-neutral"></span>Dexus: 1.8%</li>
+                                    <li><span class="status-indicator status-neutral"></span>Mirvac: 2.1%</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-balance-scale"></i>
+                            <span data-lang="en">SWOT Analysis</span><span data-lang="zh">SWOT分析</span>
+                        </h3>
+                        <div class="swot-grid">
+                            <div class="swot-card swot-strengths">
+                                <h5><i class="fas fa-plus-circle"></i> <span data-lang="en">Strengths</span><span data-lang="zh">优势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Integrated assets (Suntec City)</span><span data-lang="zh">综合资产 (Suntec City)</span></li>
+                                    <li><span data-lang="en">High occupancy (98.8%)</span><span data-lang="zh">高入住率 (98.8%)</span></li>
+                                    <li><span data-lang="en">ESG leadership (GRESB 5 Star)</span><span data-lang="zh">ESG领导地位 (GRESB 5星)</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-weaknesses">
+                                <h5><i class="fas fa-minus-circle"></i> <span data-lang="en">Weaknesses</span><span data-lang="zh">劣势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Higher financing costs (4.06%)</span><span data-lang="zh">融资成本较高 (4.06%)</span></li>
+                                    <li><span data-lang="en">Vacancies in Australia/UK</span><span data-lang="zh">澳大利亚/英国空置</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-opportunities">
+                                <h5><i class="fas fa-arrow-up"></i> <span data-lang="en">Opportunities</span><span data-lang="zh">机会</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Expand ESG initiatives</span><span data-lang="zh">扩大ESG计划</span></li>
+                                    <li><span data-lang="en">Grow in Asia-Pacific markets</span><span data-lang="zh">在亚太市场增长</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-threats">
+                                <h5><i class="fas fa-exclamation-triangle"></i> <span data-lang="en">Threats</span><span data-lang="zh">威胁</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Geopolitical tensions</span><span data-lang="zh">地缘政治紧张</span></li>
+                                    <li><span data-lang="en">Rising interest rates</span><span data-lang="zh">利率上升</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Europe -->
+            <div class="tab-pane fade" id="europe" role="tabpanel">
+                <div class="content-section">
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="fas fa-globe-europe"></i>
+                            <span data-lang="en">European Market Analysis</span><span data-lang="zh">欧洲市场分析</span>
+                        </h2>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-users"></i>
+                            <span data-lang="en">UK Competitive Landscape</span><span data-lang="zh">英国竞争格局</span>
+                        </h3>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-bullseye"></i> <span data-lang="en">Direct Competitors</span><span data-lang="zh">直接竞争对手</span></h6>
+                                <ul>
+                                    <li><a href="https://www.landsec.com/" target="_blank">Landsec (Land Securities Group PLC)</a></li>
+                                    <li><a href="https://www.britishland.com/" target="_blank">British Land</a></li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-shield-alt"></i> <span data-lang="en">Indirect Competitors</span><span data-lang="zh">间接竞争对手</span></h6>
+                                <ul>
+                                    <li><span data-lang="en">Private real estate funds</span><span data-lang="zh">私人房地产基金</span></li>
+                                    <li>Blackstone Europe</li>
+                                    <li><span data-lang="en">Property developers</span><span data-lang="zh">开发商</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-database"></i>
+                            <span data-lang="en">UK Market Performance</span><span data-lang="zh">英国市场表现</span>
+                        </h3>
+                        <div class="comparison-table">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th><span data-lang="en">Competitor</span><span data-lang="zh">竞争对手</span></th>
+                                        <th><span data-lang="en">Portfolio Value</span><span data-lang="zh">投资组合价值</span></th>
+                                        <th><span data-lang="en">Asset Type</span><span data-lang="zh">资产类型</span></th>
+                                        <th><span data-lang="en">Occupancy</span><span data-lang="zh">入住率</span></th>
+                                        <th><span data-lang="en">Key Assets</span><span data-lang="zh">关键资产</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Suntec REIT</strong></td>
+                                        <td>SGD 1.2B (9.7% of portfolio)</td>
+                                        <td>Office focus</td>
+                                        <td>70% (facing vacancies)</td>
+                                        <td>The Minster Building, Nova Properties</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.landsec.com/" target="_blank">Landsec</a></td>
+                                        <td>GBP 10.2B (~SGD 17.5B)</td>
+                                        <td>60% office, 30% retail</td>
+                                        <td>92%</td>
+                                        <td>One New Change</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.britishland.com/" target="_blank">British Land</a></td>
+                                        <td>GBP 9.3B (~SGD 16B)</td>
+                                        <td>50% office, 40% retail</td>
+                                        <td>90%</td>
+                                        <td>Broadgate</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span data-lang="en">UK Market Analysis</span><span data-lang="zh">英国市场分析</span>
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">UK Commercial REIT Market Share</div>
+                                    <div class="chart-title" data-lang="zh">英国商业REIT市场份额</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="ukMarketShareChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">UK Asset Performance</div>
+                                    <div class="chart-title" data-lang="zh">英国资产表现</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="ukPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-percentage"></i> <span data-lang="en">Market Share</span><span data-lang="zh">市场份额</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-negative"></span><span data-lang="en">Suntec REIT: <1% (small portfolio)</span><span data-lang="zh">Suntec REIT：小于1%（小型投资组合）</span></li>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">Landsec: ~5% of UK's commercial REIT market</span><span data-lang="zh">Landsec：英国商业REIT市场约5%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">British Land: ~4%</span><span data-lang="zh">British Land：约4%</span></li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-arrow-up"></i> <span data-lang="en">Growth Trends</span><span data-lang="zh">增长趋势</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-negative"></span><span data-lang="en">Suntec REIT: UK assets saw valuation declines in 2024</span><span data-lang="zh">Suntec REIT：2024年英国资产估值下降</span></li>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">Landsec: 2.5% revenue growth</span><span data-lang="zh">Landsec：收入增长2.5%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">British Land: 1.9% revenue growth</span><span data-lang="zh">British Land：收入增长1.9%</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-balance-scale"></i>
+                            <span data-lang="en">SWOT Analysis</span><span data-lang="zh">SWOT分析</span>
+                        </h3>
+                        <div class="swot-grid">
+                            <div class="swot-card swot-strengths">
+                                <h5><i class="fas fa-plus-circle"></i> <span data-lang="en">Strengths</span><span data-lang="zh">优势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">ESG focus</span><span data-lang="zh">ESG聚焦</span></li>
+                                    <li><span data-lang="en">Global diversification</span><span data-lang="zh">全球多元化</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-weaknesses">
+                                <h5><i class="fas fa-minus-circle"></i> <span data-lang="en">Weaknesses</span><span data-lang="zh">劣势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Limited UK presence</span><span data-lang="zh">英国市场份额有限</span></li>
+                                    <li><span data-lang="en">Vacancies</span><span data-lang="zh">空置率</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-opportunities">
+                                <h5><i class="fas fa-arrow-up"></i> <span data-lang="en">Opportunities</span><span data-lang="zh">机会</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Expand UK portfolio</span><span data-lang="zh">扩展英国投资组合</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-threats">
+                                <h5><i class="fas fa-exclamation-triangle"></i> <span data-lang="en">Threats</span><span data-lang="zh">威胁</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Brexit-related volatility</span><span data-lang="zh">脱欧相关波动</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- United States -->
+            <div class="tab-pane fade" id="us" role="tabpanel">
+                <div class="content-section">
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <i class="fas fa-globe-americas"></i>
+                            <span data-lang="en">US Market Analysis</span><span data-lang="zh">美国市场分析</span>
+                        </h2>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-users"></i>
+                            <span data-lang="en">US Competitive Landscape</span><span data-lang="zh">美国竞争格局</span>
+                        </h3>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-bullseye"></i> <span data-lang="en">Direct Competitors</span><span data-lang="zh">直接竞争对手</span></h6>
+                                <ul>
+                                    <li><a href="https://www.bostonproperties.com/" target="_blank">Boston Properties</a></li>
+                                    <li><a href="https://www.vno.com/" target="_blank">Vornado Realty Trust</a></li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-shield-alt"></i> <span data-lang="en">Indirect Competitors</span><span data-lang="zh">间接竞争对手</span></h6>
+                                <ul>
+                                    <li><span data-lang="en">Private real estate funds</span><span data-lang="zh">私人房地产基金</span></li>
+                                    <li>Brookfield Asset Management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-database"></i>
+                            <span data-lang="en">US Market Comparison</span><span data-lang="zh">美国市场对比</span>
+                        </h3>
+                        <div class="comparison-table">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th><span data-lang="en">Competitor</span><span data-lang="zh">竞争对手</span></th>
+                                        <th><span data-lang="en">Portfolio Value</span><span data-lang="zh">投资组合价值</span></th>
+                                        <th><span data-lang="en">Asset Type</span><span data-lang="zh">资产类型</span></th>
+                                        <th><span data-lang="en">Occupancy</span><span data-lang="zh">入住率</span></th>
+                                        <th><span data-lang="en">Focus</span><span data-lang="zh">重点区域</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Suntec REIT</strong></td>
+                                        <td>No US assets</td>
+                                        <td>Global portfolio</td>
+                                        <td>N/A</td>
+                                        <td>Competes for institutional investor capital</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.bostonproperties.com/" target="_blank">Boston Properties</a></td>
+                                        <td>USD 22.7B (~SGD 30B)</td>
+                                        <td>85% office</td>
+                                        <td>90%</td>
+                                        <td>Boston, New York</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.vno.com/" target="_blank">Vornado Realty Trust</a></td>
+                                        <td>USD 16.5B (~SGD 22B)</td>
+                                        <td>80% office</td>
+                                        <td>88%</td>
+                                        <td>New York</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span data-lang="en">Global Investor Competition</span><span data-lang="zh">全球投资者竞争</span>
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">US Office REIT Market Share</div>
+                                    <div class="chart-title" data-lang="zh">美国办公REIT市场份额</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="usMarketShareChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="chart-container">
+                                    <div class="chart-title" data-lang="en">Global Investor Competition</div>
+                                    <div class="chart-title" data-lang="zh">全球投资者竞争</div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="globalInvestorChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-grid">
+                            <div class="data-card">
+                                <h6><i class="fas fa-percentage"></i> <span data-lang="en">Market Share</span><span data-lang="zh">市场份额</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-negative"></span><span data-lang="en">Suntec REIT: 0% US market share</span><span data-lang="zh">Suntec REIT：美国市场份额0%</span></li>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">Boston Properties: ~3% of US office REIT market</span><span data-lang="zh">Boston Properties：美国办公REIT市场约3%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">Vornado: ~2% of US office REIT market</span><span data-lang="zh">Vornado：约2%</span></li>
+                                </ul>
+                            </div>
+                            <div class="data-card">
+                                <h6><i class="fas fa-arrow-up"></i> <span data-lang="en">Growth Trends</span><span data-lang="zh">增长趋势</span></h6>
+                                <ul>
+                                    <li><span class="status-indicator status-positive"></span><span data-lang="en">Boston Properties: 1.5% revenue growth</span><span data-lang="zh">Boston Properties：收入增长1.5%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">Vornado: 1.2% revenue growth</span><span data-lang="zh">Vornado：收入增长1.2%</span></li>
+                                    <li><span class="status-indicator status-neutral"></span><span data-lang="en">Suntec REIT: 1.4% growth competes for global investor funds</span><span data-lang="zh">Suntec REIT：1.4%增长，参与全球投资者竞争</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-balance-scale"></i>
+                            <span data-lang="en">SWOT Analysis</span><span data-lang="zh">SWOT分析</span>
+                        </h3>
+                        <div class="swot-grid">
+                            <div class="swot-card swot-strengths">
+                                <h5><i class="fas fa-plus-circle"></i> <span data-lang="en">Strengths</span><span data-lang="zh">优势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Global diversification</span><span data-lang="zh">全球多元化</span></li>
+                                    <li><span data-lang="en">ESG</span><span data-lang="zh">ESG</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-weaknesses">
+                                <h5><i class="fas fa-minus-circle"></i> <span data-lang="en">Weaknesses</span><span data-lang="zh">劣势</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">No US presence</span><span data-lang="zh">无美国市场布局</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-opportunities">
+                                <h5><i class="fas fa-arrow-up"></i> <span data-lang="en">Opportunities</span><span data-lang="zh">机会</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">Enter US market</span><span data-lang="zh">进入美国市场</span></li>
+                                </ul>
+                            </div>
+                            <div class="swot-card swot-threats">
+                                <h5><i class="fas fa-exclamation-triangle"></i> <span data-lang="en">Threats</span><span data-lang="zh">威胁</span></h5>
+                                <ul>
+                                    <li><span data-lang="en">US market competition</span><span data-lang="zh">美国市场竞争</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="suntec-analysis.js"></script>
+    
+    <!-- 内联测试脚本 -->
+    <script>
+        console.log('Inline script loaded');
+        
+        // 等待页面完全加载
+        window.addEventListener('load', function() {
+            console.log('Window loaded');
+            
+            // 再次尝试绑定事件
+            const buttons = document.querySelectorAll('.language-btn');
+            console.log('Inline script found buttons:', buttons.length);
+            
+            buttons.forEach((btn, i) => {
+                console.log(`Inline button ${i}:`, btn.textContent);
+                
+                // 移除所有现有事件监听器
+                btn.replaceWith(btn.cloneNode(true));
+            });
+            
+            // 重新获取按钮并绑定事件
+            const newButtons = document.querySelectorAll('.language-btn');
+            newButtons.forEach((btn, i) => {
+                btn.addEventListener('click', function(e) {
+                    console.log('Inline button clicked:', this.textContent);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const lang = this.getAttribute('data-lang');
+                    console.log('Language:', lang);
+                    
+                    // 切换语言 - 目标语言逻辑
+                    if (lang === 'en') {
+                        document.body.classList.add('lang-zh');
+                        console.log('Switched to Chinese');
+                    } else if (lang === 'zh') {
+                        document.body.classList.remove('lang-zh');
+                        console.log('Switched to English');
+                    }
+                    
+                    // 更新按钮状态
+                    newButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+                
+                // 添加更多事件监听器
+                btn.addEventListener('mousedown', function() {
+                    console.log('Mouse down on:', this.textContent);
+                });
+                
+                btn.addEventListener('mouseup', function() {
+                    console.log('Mouse up on:', this.textContent);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
